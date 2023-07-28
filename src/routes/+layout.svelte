@@ -13,6 +13,7 @@
 		AppShell,
 		LightSwitch
 	} from '@skeletonlabs/skeleton';
+	import { links } from '$lib/links';
 
 	let currentTile = 0;
 </script>
@@ -23,7 +24,13 @@
 			<svelte:fragment slot="lead">
 				<h1>QCLI</h1>
 			</svelte:fragment>
-			<h1>Current Tile: {currentTile}</h1>
+			<nav>
+				<ul class="flex space-x-2">
+					{#each links.navlinks as link}
+						<li><a href={link.url} class="anchor">{link.title}</a></li>
+					{/each}
+				</ul>
+			</nav>
 			<svelte:fragment slot="trail">
 				<LightSwitch />
 			</svelte:fragment>
@@ -34,15 +41,15 @@
 			<hr class="opacity-30" />
 			<AppRailTile bind:group={currentTile} name="tile-1" value={0} title="tile-1">
 				<svelte:fragment slot="lead">(icon)</svelte:fragment>
-				<span>Tile 1</span>
+				<span>File Explorer</span>
 			</AppRailTile>
 			<AppRailTile bind:group={currentTile} name="tile-2" value={1} title="tile-2">
 				<svelte:fragment slot="lead">(icon)</svelte:fragment>
-				<span>Tile 2</span>
+				<span>Gallery</span>
 			</AppRailTile>
 			<AppRailTile bind:group={currentTile} name="tile-3" value={2} title="tile-3">
 				<svelte:fragment slot="lead">(icon)</svelte:fragment>
-				<span>Tile 3</span>
+				<span>Settings</span>
 			</AppRailTile>
 		</AppRail>
 	</svelte:fragment>
