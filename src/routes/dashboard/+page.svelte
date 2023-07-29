@@ -1,42 +1,48 @@
 <script lang="ts">
 	import { FileDropzone, Table, tableMapperValues, type TableSource } from '@skeletonlabs/skeleton';
 	import { parse } from 'papaparse';
+
 	let files: FileList;
 
 	function onChangeHandler(e: any): void {
 		if (!e.target.files) return;
-		let file = e.target.files[0];
+		const file = e.target.files[0];
 		parse(file, {
 			download: true,
 			header: true,
 			skipEmptyLines: true,
-			complete: (results) => {
-				console.log(results.data);
+			complete: (results: any) => {
+				const data = results.data;
+				sourceData = data;
 			}
 		});
 	}
 
-	const sourceData = [
+	// $: console.log('Source Data Changed', sourceData);
+
+	interface CSVRowObject {
+		[key: string]: any;
+	}
+
+	let sourceData: CSVRowObject[] = [
 		{ position: 1, name: 'Hydrogen', weight: 1.0079, symbol: 'H' },
 		{ position: 2, name: 'Helium', weight: 4.0026, symbol: 'He' },
 		{ position: 3, name: 'Lithium', weight: 6.941, symbol: 'Li' },
 		{ position: 4, name: 'Beryllium', weight: 9.0122, symbol: 'Be' },
 		{ position: 5, name: 'Boron', weight: 10.811, symbol: 'B' }
 	];
-	const tableSimple: TableSource = {
+
+	// Recalculate table data when sourceData changes
+	$: tableSimple = {
 		// A list of heading labels.
-		head: ['Name', 'Symbol', 'Weight'],
+		head: Object.keys(sourceData[0]),
 		// The data visibly shown in your table body UI.
-		body: tableMapperValues(sourceData, ['name', 'symbol', 'weight']),
-		// Optional: The data returned when interactive is enabled and a row is clicked.
-		meta: tableMapperValues(sourceData, ['position', 'name', 'symbol', 'weight']),
-		// Optional: A list of footer labels.
-		foot: ['Total', '', '<code class="code">5 Rows</code>']
+		body: tableMapperValues(sourceData, Object.keys(sourceData[0]))
 	};
 </script>
 
 <div class="container h-full mx-auto flex justify-center items-center">
-	<div class="w-2/3 space-y-5">
+	<div class="w-4/5 space-y-5">
 		<h1 class="h1">Dashboard</h1>
 		<FileDropzone name="files" accept=".csv" bind:files on:change={onChangeHandler}>
 			<svelte:fragment slot="lead">(icon)</svelte:fragment>
