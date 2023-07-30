@@ -1,4 +1,5 @@
 <script lang="ts">
+	import ScatterPlot from '$lib/components/ScatterPlot.svelte';
 	import {
 		FileDropzone,
 		Table,
@@ -107,5 +108,6 @@
 		{#if headers.length !== 0}
 			<Paginator bind:settings={page} showFirstLastButtons={true} showPreviousNextButtons={true} />
 		{/if}
+		<ScatterPlot />
 	</div>
 </div>
