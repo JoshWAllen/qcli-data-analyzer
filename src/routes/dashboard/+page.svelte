@@ -1,5 +1,12 @@
 <script lang="ts">
-	import { FileDropzone, Table, tableMapperValues, Paginator } from '@skeletonlabs/skeleton';
+	import {
+		FileDropzone,
+		Table,
+		tableMapperValues,
+		Paginator,
+		ListBox,
+		ListBoxItem
+	} from '@skeletonlabs/skeleton';
 	import { parse } from 'papaparse';
 
 	let files: FileList;
@@ -30,6 +37,8 @@
 		{ position: 5, name: 'Boron', weight: 10.811, symbol: 'B' }
 	];
 
+	let headers = Object.keys(sourceData[0]);
+
 	// PaginatorSettings
 	let page = {
 		offset: 0,
@@ -37,6 +46,10 @@
 		size: 0,
 		amounts: [1, 2, 5, 10, 25, 50]
 	};
+
+	function updateColumns() {
+		headers = Object.keys(sourceData[0]);
+	}
 
 	function updatePage() {
 		page = {
@@ -47,6 +60,7 @@
 
 	$: if (sourceData.length > 0) {
 		updatePage();
+		updateColumns();
 	}
 
 	$: paginatedSource = sourceData.slice(
@@ -57,14 +71,16 @@
 	// Recalculate table data when sourceData changes
 	$: tableSimple = {
 		// A list of heading labels.
-		head: Object.keys(sourceData[0]),
+		head: headers,
 		// The data visibly shown in your table body UI.
-		body: tableMapperValues(paginatedSource, Object.keys(sourceData[0]))
+		body: tableMapperValues(paginatedSource, headers)
 	};
 
 	$: if (files) {
 		console.log(files[0].name);
 	}
+
+	// $: console.log('headers changed: ', headers);
 </script>
 
 <div class="container h-full mx-auto flex justify-center items-center">
@@ -81,7 +97,15 @@
 			<svelte:fragment slot="meta">only CSV allowed</svelte:fragment>
 		</FileDropzone>
 
+		<ListBox multiple>
+			{#each Object.keys(sourceData[0]) as header (header)}
+				<ListBoxItem bind:group={headers} name="headers" value={header}>{header}</ListBoxItem>
+			{/each}
+		</ListBox>
+
 		<Table source={tableSimple} />
-		<Paginator bind:settings={page} showFirstLastButtons={true} showPreviousNextButtons={true} />
+		{#if headers.length !== 0}
+			<Paginator bind:settings={page} showFirstLastButtons={true} showPreviousNextButtons={true} />
+		{/if}
 	</div>
 </div>
