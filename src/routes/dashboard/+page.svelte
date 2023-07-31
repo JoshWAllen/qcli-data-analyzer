@@ -1,5 +1,5 @@
 <script lang="ts">
-	import ScatterPlot from '$lib/components/ScatterPlot.svelte';
+	import ScatterPlot from '$lib/components/LineChart.svelte';
 	import {
 		FileDropzone,
 		Table,
