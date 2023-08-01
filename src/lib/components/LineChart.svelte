@@ -35,27 +35,28 @@
 			data: {
 				labels: chartLabels,
 				datasets: datasets
+			},
+			options: {
+				maintainAspectRatio: false
+				// plugins: {
+				// 	legend: {
+				// 		labels: {
+				// 			color: 'blue'
+				// 		}
+				// 	}
+				// },
+				// scales: {
+				// 	x: {
+				// 		grid: {
+				// 			color: 'blue'
+				// 		}
+				// 	}
+				// }
 			}
-			// options: {
-			// 	plugins: {
-			// 		legend: {
-			// 			labels: {
-			// 				color: 'blue'
-			// 			}
-			// 		}
-			// 	},
-			// 	scales: {
-			// 		x: {
-			// 			grid: {
-			// 				color: 'blue'
-			// 			}
-			// 		}
-			// 	}
-			// }
 		});
 	});
 </script>
 
-<div class="container bg-surface-100-800-token p-6 rounded-lg">
+<div class="w-full h-96 relative bg-surface-100-800-token p-6 rounded-lg">
 	<canvas bind:this={chartCanvas} id="myChart" />
 </div>

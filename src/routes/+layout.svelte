@@ -5,14 +5,7 @@
 	import '@skeletonlabs/skeleton/styles/skeleton.css';
 	// Most of your app wide CSS should be put in this file
 	import '../app.postcss';
-	import {
-		AppBar,
-		AppRail,
-		AppRailAnchor,
-		AppRailTile,
-		AppShell,
-		LightSwitch
-	} from '@skeletonlabs/skeleton';
+	import { AppBar, AppRail, AppRailTile, AppShell, LightSwitch } from '@skeletonlabs/skeleton';
 	import { links } from '$lib/links';
 
 	let currentTile = 0;
@@ -20,7 +13,7 @@
 
 <AppShell>
 	<svelte:fragment slot="header">
-		<AppBar class="w-full">
+		<AppBar class="w-full shadow-xl">
 			<svelte:fragment slot="lead">
 				<h1>QCLI</h1>
 			</svelte:fragment>
@@ -37,7 +30,7 @@
 		</AppBar>
 	</svelte:fragment>
 	<svelte:fragment slot="sidebarLeft">
-		<AppRail background="bg-surface-50-900-token">
+		<AppRail background="bg-surface-50-900-token" border="border-r border-surface-500/20">
 			<hr class="opacity-30" />
 			<AppRailTile bind:group={currentTile} name="tile-1" value={0} title="tile-1">
 				<svelte:fragment slot="lead">(icon)</svelte:fragment>
