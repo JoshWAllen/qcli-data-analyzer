@@ -1,5 +1,5 @@
 <script lang="ts">
-	import ScatterPlot from '$lib/components/LineChart.svelte';
+	import LineChart from '$lib/components/LineChart.svelte';
 	import {
 		FileDropzone,
 		Table,
@@ -25,7 +25,6 @@
 			}
 		});
 	}
-
 	interface CSVRowObject {
 		[key: string]: any;
 	}
@@ -82,6 +81,25 @@
 	}
 
 	// $: console.log('headers changed: ', headers);
+
+	const chart1 = [
+		[1, 5, 6, 2, 3, 7, 1],
+		[2, 3, 4, 1, 2, 4, 6],
+		[7, 1, 4, 2, 6, 7, 2],
+		[1, 5, 6, 2, 0, 9, 1],
+		[2, 5, 4, 1, 2, 8, 6],
+		[7, 1, 4, 4, 1, 2, 2]
+	];
+	const chartLabels = ['January', 'February', 'March', 'April', 'May', 'June', 'July'];
+
+	let numbers = [
+		[1, 2],
+		[5, 6]
+	];
+
+	function addNumber() {
+		numbers = [...numbers, [numbers.length + 1, numbers.length + 3, numbers.length + 4]];
+	}
 </script>
 
 <div class="container h-full mx-auto flex justify-center items-center">
@@ -97,7 +115,9 @@
 			<svelte:fragment slot="message">Upload a file or drag and drop</svelte:fragment>
 			<svelte:fragment slot="meta">only CSV allowed</svelte:fragment>
 		</FileDropzone>
+		<button on:click={addNumber} class="btn variant-filled">Add Numbers</button>
 
+		<LineChart chartValues={numbers} {chartLabels} />
 		<ListBox multiple>
 			{#each Object.keys(sourceData[0]) as header (header)}
 				<ListBoxItem bind:group={headers} name="headers" value={header}>{header}</ListBoxItem>
@@ -108,6 +128,5 @@
 		{#if headers.length !== 0}
 			<Paginator bind:settings={page} showFirstLastButtons={true} showPreviousNextButtons={true} />
 		{/if}
-		<ScatterPlot />
 	</div>
 </div>

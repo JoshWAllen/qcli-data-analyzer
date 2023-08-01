@@ -2,23 +2,39 @@
 	import Chart from 'chart.js/auto';
 	import { onMount } from 'svelte';
 
-	let chartValues = [[1, 2]];
-	let chartLabels = ['January', 'February', 'March', 'April', 'May', 'June', 'July'];
+	export let chartValues: number[][];
+	export let chartLabels: string[];
+
 	let chartCanvas: HTMLCanvasElement;
 
+	interface Dataset {
+		label: string;
+		data: number[];
+	}
+
+	let datasets: Dataset[] = [
+		{ label: 'chart1', data: [1, 2, 3] },
+		{ label: 'chart1', data: [5, 6, 7] }
+	];
+	$: {
+		datasets = chartValues.map((dataset, i) => {
+			return { label: `Chart ${i}`, data: dataset };
+		});
+	}
+
+	let chartInstance: any;
+
+	$: if (chartInstance) {
+		chartInstance.data.datasets = datasets;
+		chartInstance.update();
+	}
+
 	onMount(async () => {
-		new Chart(chartCanvas, {
+		chartInstance = new Chart(chartCanvas, {
 			type: 'line',
 			data: {
 				labels: chartLabels,
-				datasets: [
-					{
-						label: 'Revenue',
-						data: chartValues,
-						backgroundColor: 'rgb(255, 99, 132)',
-						borderColor: 'rgb(255, 99, 132)'
-					}
-				]
+				datasets: datasets
 			}
 			// options: {
 			// 	plugins: {
